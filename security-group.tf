@@ -7,7 +7,7 @@ resource "aws_security_group" "acesso-ssh" {
       from_port        = 22
       to_port          = 22
       protocol         = "tcp"
-      cidr_blocks      = ["179.250.171.7/32"] 
+      cidr_blocks      = var.cidr_acesso_remoto
   }
   tags = {
     Name = "ssh"
@@ -24,7 +24,7 @@ resource "aws_security_group" "acesso-ssh-us-east-2" {
       from_port        = 22
       to_port          = 22
       protocol         = "tcp"
-      cidr_blocks      = ["179.250.171.7/32"] 
+      cidr_blocks      = var.cidr_acesso_remoto
   }
   tags = {
     Name = "ssh"

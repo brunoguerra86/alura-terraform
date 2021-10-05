@@ -12,7 +12,7 @@ resource "aws_instance" "dev"{
     count = 3
     ami = "ami-0747bdcabd34c712a"
     instance_type = "t2.micro"
-    key_name = "terraform-aws"
+    key_name = var.key_name
     tags = {
         Name = "dev${count.index}"
     }
@@ -20,22 +20,22 @@ resource "aws_instance" "dev"{
 }
 
 #Criação de nova instância
-resource "aws_instance" "dev4"{
+/*resource "aws_instance" "dev4"{
     ami = "ami-0747bdcabd34c712a"
     instance_type = "t2.micro"
-    key_name = "terraform-aws"
+    key_name = var.key_name
     tags = {
         Name = "dev4"
     }
     vpc_security_group_ids = ["${aws_security_group.acesso-ssh.id}"]
     depends_on = [aws_s3_bucket.dev4]
-}
+}*/
 
 #Criação de nova instância
 resource "aws_instance" "dev5"{
-    ami = "ami-0747bdcabd34c712a"
+    ami = var.amis["us-east-1"]
     instance_type = "t2.micro"
-    key_name = "terraform-aws"
+    key_name = var.key_name
     tags = {
         Name = "dev5"
     }
@@ -45,9 +45,9 @@ resource "aws_instance" "dev5"{
 #Criação de nova instância - EM NOVA REGIÃO
 resource "aws_instance" "dev6"{
     provider = aws.us-east-2
-    ami = "ami-00dfe2c7ce89a450b" #Amazon Linux 2 AMI (HVM)
+    ami = var.amis["us-east-2"]
     instance_type = "t2.micro"
-    key_name = "terraform-aws"
+    key_name = var.key_name
     tags = {
         Name = "dev6"
     }
@@ -55,15 +55,27 @@ resource "aws_instance" "dev6"{
     depends_on = [aws_dynamodb_table.dynamodb-homologacao]
 }
 
+#Criação de nova instância - EM NOVA REGIÃO
+resource "aws_instance" "dev7"{
+    provider = aws.us-east-2
+    ami = var.amis["us-east-2"]
+    instance_type = "t2.micro"
+    key_name = var.key_name
+    tags = {
+        Name = "dev7"
+    }
+    vpc_security_group_ids = ["${aws_security_group.acesso-ssh-us-east-2.id}"]
+}
+
 #Criação de S3 Bucket
-resource "aws_s3_bucket" "dev4" {
+/*resource "aws_s3_bucket" "dev4" {
   bucket = "labs-dev4"
   acl    = "private"
 
   tags = {
     Name        = "labs-dev4"
   }
-}
+}*/
 
 #Criando um Banco de Dados
 resource "aws_dynamodb_table" "dynamodb-homologacao" {
